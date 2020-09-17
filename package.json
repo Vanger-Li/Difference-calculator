@@ -2,7 +2,7 @@
   "name": "frontend-project-lvl2",
   "version": "1.0.0",
   "description": "The command line utility compares the two config files and shows the difference.",
-  "main": "index.js",
+  "main": "bin/gendiff.js",
   "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
