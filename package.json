@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The command line utility compares the two config files and shows the difference.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,8 +12,9 @@
     "url": "git+https://github.com/Vanger-Li/frontend-project-lvl2.git"
   },
   "keywords": [
-    "diff",
-    "finder"
+    "diff finder",
+    "cli",
+    "difference calculator"
   ],
   "author": "Vitaliy Rudenko",
   "license": "ISC",
