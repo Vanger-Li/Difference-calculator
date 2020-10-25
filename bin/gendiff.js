@@ -8,8 +8,8 @@ program
   .description('Compares two configuration files and shows a difference.')
   .option('-f, --format [type]', 'output format')
   .arguments('<filepath1> <filepath2>')
-  .action((file1, file2) => {
-    genDiff(file1, file2);
+  .action((filepath1, filepath2) => {
+    genDiff(filepath1, filepath2);
   });
 
 program.parse(process.argv);
