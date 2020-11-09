@@ -6,3 +6,12 @@ publish-pack:
 
 test:
 	npx -n --experimental-vm-modules jest
+
+link:
+	npm link
+
+lint:
+	npx eslint .
+
+fix-lint:
+	npx eslint . --fix
