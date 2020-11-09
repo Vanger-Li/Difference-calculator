@@ -1,10 +1,15 @@
-import { extname } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join, extname } from 'path';
 import fs from 'fs';
 import yaml from 'js-yaml';
 
-const getDataOfFile = (filePath) => {
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const format = extname(filePath);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const getDataFromFile = (filepath) => {
+  const absolutPath = (filename) => join(__dirname, '..', '__fixtures__', filename);
+  const fileContent = fs.readFileSync(absolutPath(filepath), 'utf-8');
+  const format = extname(filepath);
 
   let parse;
   switch (format) {
@@ -15,6 +20,6 @@ const getDataOfFile = (filePath) => {
       parse = JSON.parse;
   }
 
-  return parse(data);
+  return parse(fileContent);
 };
-export default getDataOfFile;
+export default getDataFromFile;
