@@ -8,14 +8,13 @@
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "npm jest"
+    "test": "npx -n --experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Vanger-Li/frontend-project-lvl2.git"
   },
   "keywords": [
-    "diff finder",
     "cli",
     "difference calculator"
   ],
