@@ -7,7 +7,7 @@ import genDiff from '../src/index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const absolutPath = (filename) => join(__dirname, '..', '__fixtures__', filename);
-const expectedFile = (fs.readFileSync(absolutPath('expectedFile'), 'utf-8'));
+const expectedFile = (fs.readFileSync(absolutPath('expectedStylish'), 'utf-8'));
 
 test('Comparing two JSON files', () => {
   expect(genDiff('file1.json', 'file2.json')).toEqual(expectedFile);
