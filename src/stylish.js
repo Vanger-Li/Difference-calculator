@@ -14,6 +14,7 @@ const formatValue = (value, depth) => {
 const makeStylish = (diff) => {
   const dataFormat = (data, depth = 1) => data.map(({
     name, type, value, removedValue, addedValue, children,
+  // eslint-disable-next-line array-callback-return
   }) => {
     switch (type) {
       case 'added':
@@ -26,6 +27,8 @@ const makeStylish = (diff) => {
         return `${indent(depth + 1)}${name}: {\n${dataFormat(children, depth + 2)}\n${indent(depth + 1)}}`;
       case 'unchanged':
         return `${indent(depth)}  ${name}: ${formatValue(value, depth)}`;
+      default:
+        return `${type} is unknown!`;
     }
   }).join('\n');
   return `{\n${dataFormat(diff)}\n}`;
