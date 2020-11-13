@@ -17,14 +17,14 @@ const makeStylish = (diff) => {
   // eslint-disable-next-line array-callback-return
   }) => {
     switch (type) {
+      case 'parent':
+        return `${indent(depth + 1)}${name}: {\n${dataFormat(children, depth + 2)}\n${indent(depth + 1)}}`;
       case 'added':
         return `${indent(depth)}+ ${name}: ${formatValue(value, depth)}`;
       case 'changed':
         return `${indent(depth)}- ${name}: ${formatValue(removedValue, depth)}\n${indent(depth)}+ ${name}: ${formatValue(addedValue, depth)}`;
       case 'removed':
         return `${indent(depth)}- ${name}: ${formatValue(value, depth)}`;
-      case 'parent':
-        return `${indent(depth + 1)}${name}: {\n${dataFormat(children, depth + 2)}\n${indent(depth + 1)}}`;
       case 'unchanged':
         return `${indent(depth)}  ${name}: ${formatValue(value, depth)}`;
       default:
