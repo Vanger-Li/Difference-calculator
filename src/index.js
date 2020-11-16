@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import parser from './parsers.js';
-import findDiffOfFiles from './getDiff.js';
+import findDiffOfFiles from './findDiff.js';
 import selectFormat from './formatters/index.js';
 
 const getDataOfFile = (filepath) => {
-  const absolutePath = path.resolve(process.cwd(), filepath);
+  const absolutePath = path.resolve(process.cwd(), '__fixtures__', filepath);
   return fs.readFileSync(absolutePath, 'utf8');
 };
 
