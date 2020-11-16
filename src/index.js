@@ -1,13 +1,23 @@
-import getDataFromFile from './parsers.js';
-import getDiffOfFiles from './getDiff.js';
+import fs from 'fs';
+import path from 'path';
+import parser from './parsers.js';
+import findDiffOfFiles from './getDiff.js';
 import selectFormat from './formatters/index.js';
 
-const genDiff = (filepath1, filepath2) => {
-  const dataOfFiles1 = getDataFromFile(filepath1);
-  const dataOfFiles2 = getDataFromFile(filepath2);
+const getDataOfFile = (filepath) => {
+  const absolutePath = path.resolve(process.cwd(), filepath);
+  return fs.readFileSync(absolutePath, 'utf8');
+};
 
-  const diff = getDiffOfFiles(dataOfFiles1, dataOfFiles2);
-  return selectFormat(diff);
+const genDiff = (filepath1, filepath2, format) => {
+  const dataOfFile1 = getDataOfFile(filepath1);
+  const dataOfFile2 = getDataOfFile(filepath2);
+  const extensionOfFile1 = path.extname(filepath1).slice(1);
+  const extensionOfFile2 = path.extname(filepath2).slice(1);
+  const parsedData1 = parser(dataOfFile1, extensionOfFile1);
+  const parsedData2 = parser(dataOfFile2, extensionOfFile2);
+
+  return selectFormat(findDiffOfFiles(parsedData1, parsedData2), format);
 };
 
 export default genDiff;
