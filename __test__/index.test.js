@@ -12,4 +12,5 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 test.each(['yml', 'json'])('Comparing two %s files', (format) => {
   expect(genDiff(`file1.${format}`, `file2.${format}`, 'stylish')).toEqual(readFile('expectedStylish'));
   expect(genDiff(`file1.${format}`, `file2.${format}`, 'plain')).toEqual(readFile('expectedPlain'));
+  expect(genDiff(`file1.${format}`, `file2.${format}`, 'json')).toEqual(readFile('expectedJson'));
 });

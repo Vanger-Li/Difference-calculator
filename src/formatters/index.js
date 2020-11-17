@@ -7,6 +7,8 @@ const selectFormat = (diff, format) => {
       return makeStylish(diff);
     case 'plain':
       return makePlain(diff);
+    case 'json':
+      return JSON.stringify(diff);
     default:
       return `${format} is unknown!`;
   }
