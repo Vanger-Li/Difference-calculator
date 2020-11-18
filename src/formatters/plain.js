@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const formatValue = (value) => {
+const stringify = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
   }
@@ -14,21 +14,20 @@ const makePlain = (diff) => {
   const dataFormat = (data, path = []) => data.flatMap(({
     name, type, value, addedValue, removedValue, children,
   }) => {
-    const currentPath = [...path, name];
-    const absolutPath = currentPath.join('.');
+    const property = [...path, name].join('.');
     switch (type) {
       case 'removed':
-        return `Property '${absolutPath}' was removed`;
+        return `Property '${property}' was removed`;
       case 'added':
-        return `Property '${absolutPath}' was added with value: ${formatValue(value)}`;
+        return `Property '${property}' was added with value: ${stringify(value)}`;
       case 'changed':
-        return `Property '${absolutPath}' was updated. From ${formatValue(removedValue)} to ${formatValue(addedValue)}`;
+        return `Property '${property}' was updated. From ${stringify(removedValue)} to ${stringify(addedValue)}`;
       case 'parent':
-        return dataFormat(children, currentPath);
+        return dataFormat(children, [...path, name]);
       case 'unchanged':
         return [];
       default:
-        return `${type} is unknown!`;
+        throw new Error(`${type} is unknown!`);
     }
   }).join('\n');
   return dataFormat(diff);
