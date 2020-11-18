@@ -4,10 +4,10 @@ const parse = (data, format) => {
   switch (format) {
     case 'json':
       return JSON.parse(data);
-    case 'yml':
+    case ('yml' || 'yaml'):
       return yaml.safeLoad(data);
     default:
-      return `${format} is unknown!`;
+      throw new Error(`${format} is unknown!`);
   }
 };
 
