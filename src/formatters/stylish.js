@@ -28,7 +28,7 @@ const makeStylish = (diff) => {
       case 'unchanged':
         return `${indent(depth)}  ${name}: ${formatValue(value, depth)}`;
       default:
-        return `${type} is unknown!`;
+        throw new Error(`${type} is unknown!`);
     }
   }).join('\n');
   return `{\n${dataFormat(diff)}\n}`;
