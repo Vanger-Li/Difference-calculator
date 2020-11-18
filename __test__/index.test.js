@@ -2,15 +2,30 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
 import { test, expect } from '@jest/globals';
-import genDiff from '../src/index.js';
+import genDiff from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-test.each(['yml', 'json'])('Comparing two %s files', (format) => {
-  expect(genDiff(`file1.${format}`, `file2.${format}`, 'stylish')).toEqual(readFile('expectedStylish'));
-  expect(genDiff(`file1.${format}`, `file2.${format}`, 'plain')).toEqual(readFile('expectedPlain'));
-  expect(genDiff(`file1.${format}`, `file2.${format}`, 'json')).toEqual(readFile('expectedJson'));
+const expectedStylish = readFile('expectedStylish').trim();
+const expectedPlain = readFile('expectedPlain').trim();
+const expectedJson = readFile('expectedJson');
+
+const cases = [['json', 'stylish', expectedStylish],
+  ['yml', 'stylish', expectedStylish],
+  ['json', 'plain', expectedPlain],
+  ['yml', 'plain', expectedPlain],
+  ['yml', 'json', expectedJson],
+  ['json', 'json', expectedJson]];
+
+describe('Compares two files', () => {
+  test.each(cases)(
+    'file1 and file2 %s, formatter %s',
+    (format, formatterName, expectedResult) => {
+      const result = genDiff(getFixturePath(`file1.${format}`), getFixturePath(`file2.${format}`), formatterName);
+      expect(result).toEqual(expectedResult);
+    },
+  );
 });
