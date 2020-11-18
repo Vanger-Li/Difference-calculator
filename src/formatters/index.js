@@ -10,7 +10,7 @@ const selectFormat = (diff, format) => {
     case 'json':
       return JSON.stringify(diff);
     default:
-      return `${format} is unknown!`;
+      throw new Error(`${format} is unknown!`);
   }
 };
 
