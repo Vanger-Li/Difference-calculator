@@ -11,7 +11,7 @@ const stringify = (value) => {
 };
 
 const makePlain = (diff) => {
-  const dataFormat = (data, path = []) => data.flatMap(({
+  const iter = (node, path = []) => node.flatMap(({
     name, type, value, addedValue, removedValue, children,
   }) => {
     const property = [...path, name].join('.');
@@ -23,14 +23,14 @@ const makePlain = (diff) => {
       case 'changed':
         return `Property '${property}' was updated. From ${stringify(removedValue)} to ${stringify(addedValue)}`;
       case 'parent':
-        return dataFormat(children, [...path, name]);
+        return iter(children, [...path, name]);
       case 'unchanged':
         return [];
       default:
         throw new Error(`${type} is unknown!`);
     }
   }).join('\n');
-  return dataFormat(diff);
+  return iter(diff);
 };
 
 export default makePlain;

@@ -1,8 +1,8 @@
 import makeStylish from './stylish.js';
 import makePlain from './plain.js';
 
-const selectFormat = (diff, format) => {
-  switch (format) {
+const format = (diff, outputFormat) => {
+  switch (outputFormat) {
     case 'stylish':
       return makeStylish(diff);
     case 'plain':
@@ -10,8 +10,8 @@ const selectFormat = (diff, format) => {
     case 'json':
       return JSON.stringify(diff);
     default:
-      throw new Error(`${format} is unknown!`);
+      throw new Error(`${outputFormat} is unknown!`);
   }
 };
 
-export default selectFormat;
+export default format;
