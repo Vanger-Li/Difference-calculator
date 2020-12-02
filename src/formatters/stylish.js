@@ -1,37 +1,39 @@
 import _ from 'lodash';
 
-const indent = (depth) => '  '.repeat(depth);
+const makeIndent = (depth) => {
+  const indent = '    ';
+  return indent.repeat(depth);
+};
 
-const formatValue = (value, depth) => {
-  if (!_.isObject(value)) {
-    return value;
+const stringify = (node, depth) => {
+  if (!_.isObject(node)) {
+    return node;
   }
-  const keys = Object.keys(value);
-  const formatedValue = keys.map((key) => `${key}: ${formatValue(value[key], depth + 2)}`);
-  return `{\n${indent(depth + 3)}${formatedValue.join(`\n${indent(depth + 3)}`)}\n${indent(depth + 1)}}`;
+  const formatedValue = Object.entries(node).flatMap(([key, value]) => `${makeIndent(depth)}    ${key}: ${stringify(value, depth + 1)}`);
+  return `{\n${formatedValue.join('\n')}\n${makeIndent(depth)}}`;
 };
 
 const makeStylish = (diff) => {
-  const dataFormat = (data, depth = 1) => data.map(({
-    name, type, value, removedValue, addedValue, children,
-  // eslint-disable-next-line array-callback-return
-  }) => {
-    switch (type) {
-      case 'parent':
-        return `${indent(depth + 1)}${name}: {\n${dataFormat(children, depth + 2)}\n${indent(depth + 1)}}`;
-      case 'added':
-        return `${indent(depth)}+ ${name}: ${formatValue(value, depth)}`;
-      case 'changed':
-        return `${indent(depth)}- ${name}: ${formatValue(removedValue, depth)}\n${indent(depth)}+ ${name}: ${formatValue(addedValue, depth)}`;
-      case 'removed':
-        return `${indent(depth)}- ${name}: ${formatValue(value, depth)}`;
-      case 'unchanged':
-        return `${indent(depth)}  ${name}: ${formatValue(value, depth)}`;
-      default:
-        throw new Error(`${type} is unknown!`);
-    }
-  }).join('\n');
-  return `{\n${dataFormat(diff)}\n}`;
+  const iter = (node, depth) => {
+    const stylishValues = node.flatMap((child) => {
+      switch (child.type) {
+        case 'added':
+          return `${makeIndent(depth)}  + ${child.name}: ${stringify(child.value, depth + 1)}`;
+        case 'removed':
+          return `${makeIndent(depth)}  - ${child.name}: ${stringify(child.value, depth + 1)}`;
+        case 'unchanged':
+          return `${makeIndent(depth)}    ${child.name}: ${stringify(child.value, depth + 1)}`;
+        case 'changed':
+          return `${makeIndent(depth)}  - ${child.name}: ${stringify(child.removedValue, depth + 1)}\n${makeIndent(depth)}  + ${child.name}: ${stringify(child.addedValue, depth + 1)}`;
+        case 'parent':
+          return `${makeIndent(depth)}    ${child.name}: ${iter(child.children, depth + 1)}`;
+        default:
+          throw new Error(`${child.type} is unknown!`);
+      }
+    });
+    return `{\n${stylishValues.join('\n')}\n${makeIndent(depth)}}`;
+  };
+  return iter(diff, 0);
 };
 
 export default makeStylish;
