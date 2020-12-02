@@ -26,12 +26,12 @@
   "homepage": "https://github.com/Vanger-Li/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^6.2.0",
-    "debug": "^4.2.0",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.20"
   },
   "devDependencies": {
     "@jest/globals": "^26.4.2",
+    "debug": "^4.2.0",
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
