@@ -13,19 +13,17 @@ const expectedStylish = readFixture('expectedStylish').trim();
 const expectedPlain = readFixture('expectedPlain').trim();
 const expectedJson = readFixture('expectedJson');
 
-const cases = [['json', 'stylish', expectedStylish],
-  ['yml', 'stylish', expectedStylish],
-  ['json', 'plain', expectedPlain],
-  ['yml', 'plain', expectedPlain],
-  ['yml', 'json', expectedJson],
-  ['json', 'json', expectedJson]];
+const formats = [
+  'json',
+  'yml',
+];
 
-describe('Compares two files', () => {
-  test.each(cases)(
-    'file1 and file2 %s, formatter %s',
-    (format, formatterName, expectedResult) => {
-      const result = genDiff(getFixturePath(`file1.${format}`), getFixturePath(`file2.${format}`), formatterName);
-      expect(result).toEqual(expectedResult);
-    },
-  );
+test.each(formats)('Compares two %s files', (format) => {
+  const path2 = getFixturePath(`file2.${format}`);
+  const path1 = getFixturePath(`file1.${format}`);
+
+  expect(genDiff(path1, path2)).toEqual(expectedStylish);
+  expect(genDiff(path1, path2, 'stylish')).toEqual(expectedStylish);
+  expect(genDiff(path1, path2, 'plain')).toEqual(expectedPlain);
+  expect(genDiff(path1, path2, 'json')).toEqual(expectedJson);
 });
